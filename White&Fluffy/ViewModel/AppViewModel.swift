@@ -15,6 +15,8 @@ protocol AppViewModelProtocol {
     var favoritesPhotos: [UnsplashPhoto] { get }
     var onError: ((AFError) -> Void)? { get set }
     var onPhotosUpdated: (() -> Void)? { get set }
+    
+    func removePhoto(_ photo: UnsplashPhoto)
     func loadPhotos()
 }
 
@@ -53,6 +55,12 @@ final class AppViewModel: AppViewModelProtocol {
             case .failure(let error):
                 self.onError?(error)
             }
+        }
+    }
+    
+    func removePhoto(_ photo: UnsplashPhoto) {
+        if let index = photos.firstIndex(where: { $0.id == photo.id }) {
+            photos.remove(at: index)
         }
     }
 }

@@ -30,7 +30,7 @@ class FavoriteCell: UITableViewCell {
         photoImageView.contentMode = .scaleAspectFill
         photoImageView.clipsToBounds = true
         photoImageView.layer.cornerRadius = 5.0
-        nameLabel.font = .systemFont(ofSize: 16.0, weight: .medium)
+        nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
         
         contentView.addSubview(photoImageView)
         contentView.addSubview(nameLabel)
@@ -56,7 +56,7 @@ class FavoriteCell: UITableViewCell {
         
         nameLabel.text = photo.user.name
 
-        if let url = URL(string: photo.urls.small) {
+        if let url = URL(string: photo.urls.thumb) {
             photoImageView.kf.setImage(with: url)
         }
     }

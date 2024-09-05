@@ -24,6 +24,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.delegate = self
         setupTabBarView()
     }
 
@@ -39,11 +40,20 @@ class TabBarController: UITabBarController {
         photosVC.tabBarItem = UITabBarItem(title: "Коллекция", image: UIImage(systemName: "photo"), tag: 0)
         
         let favoritesVC = FavoritesViewController(viewModel: appViewModel)
-        favoritesVC.tabBarItem = UITabBarItem(title: "Избранные", image: UIImage(systemName: "star"), tag: 1)
+        favoritesVC.tabBarItem = UITabBarItem(title: "Избранные", image: UIImage(systemName: "heart"), tag: 1)
         
         viewControllers = [
             UINavigationController(rootViewController: photosVC),
             UINavigationController(rootViewController: favoritesVC)
         ]
+    }
+}
+
+//MARK: - UITabBarControllerDelegate
+extension TabBarController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        (viewController as? UINavigationController)?.popViewController(animated: false)
     }
 }

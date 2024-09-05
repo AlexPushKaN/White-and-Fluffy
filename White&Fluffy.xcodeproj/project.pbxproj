@@ -125,10 +125,7 @@
 		4D64841D2C88E5AB00106754 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4D64841E2C88E5C600106754 /* TabBarController.swift */,
-				4D6484202C88E70F00106754 /* PhotosViewController.swift */,
-				4D6484252C88E95000106754 /* PhotoDetailViewController.swift */,
-				4D6484272C88E96300106754 /* FavoritesViewController.swift */,
+				4D64842F2C897A8800106754 /* Controllers */,
 				4D6484242C88E92400106754 /* Cell */,
 			);
 			path = View;
@@ -141,6 +138,17 @@
 				4D64842B2C8959AE00106754 /* FavoriteCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		4D64842F2C897A8800106754 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4D64841E2C88E5C600106754 /* TabBarController.swift */,
+				4D6484202C88E70F00106754 /* PhotosViewController.swift */,
+				4D6484272C88E96300106754 /* FavoritesViewController.swift */,
+				4D6484252C88E95000106754 /* PhotoDetailViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		F64B6B4E1909B8A366EC4165 /* Pods */ = {

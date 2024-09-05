@@ -82,33 +82,33 @@ class PhotoDetailViewController: UIViewController {
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
             
-            authorLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
-            authorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            authorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            authorLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16.0),
+            authorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            authorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
             
-            dateLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 8),
-            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            dateLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 8.0),
+            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
             
-            locationLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            locationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            locationLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8.0),
+            locationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
             
-            downloadsLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 8),
-            downloadsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            downloadsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            downloadsLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 8.0),
+            downloadsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            downloadsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
             
-            favoriteButton.topAnchor.constraint(equalTo: downloadsLabel.bottomAnchor, constant: 40),
+            favoriteButton.topAnchor.constraint(equalTo: downloadsLabel.bottomAnchor, constant: 40.0),
             favoriteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             favoriteButton.heightAnchor.constraint(equalToConstant: 40.0),
             favoriteButton.widthAnchor.constraint(equalToConstant: 40.0),
-            favoriteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            favoriteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16.0)
         ])
     }
     
     private func configureData() {
         
-        if let url = URL(string: photo.urls.regular) {
+        if let url = URL(string: photo.urls.full) {
             imageView.kf.setImage(with: url)
         }
         authorLabel.text = "Автор: \(photo.user.name)"

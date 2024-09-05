@@ -37,19 +37,25 @@ class FavoritesViewController: UITableViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
         
+        navigationItem.rightBarButtonItem = editButtonItem
+        
         tableView.register(FavoriteCell.self, forCellReuseIdentifier: FavoriteCell.reuseIdentifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        isEnabledRightBarButtonItem()
         tableView.reloadData()
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50.0
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
     }
     
+    //MARK: - UITableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.favoritesPhotos.count
     }
@@ -59,6 +65,30 @@ class FavoritesViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteCell.reuseIdentifier, for: indexPath) as! FavoriteCell
         cell.configure(with: viewModel.favoritesPhotos[indexPath.row])
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let photoToDelete = viewModel.favoritesPhotos[indexPath.row]
+            viewModel.removePhoto(photoToDelete)
+            
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        isEnabledRightBarButtonItem()
+    }
+    
+    private func isEnabledRightBarButtonItem() {
+        
+        if viewModel.favoritesPhotos.isEmpty { navigationItem.rightBarButtonItem?.isEnabled = false }
+        else { navigationItem.rightBarButtonItem?.isEnabled = true }
+    }
+    
+    //MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
