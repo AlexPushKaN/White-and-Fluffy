@@ -16,7 +16,7 @@ class PhotoCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.clipsToBounds = true
-        self.layer.cornerRadius = max(self.bounds.width, self.bounds.height) / 10
+        self.layer.cornerRadius = 10.0
         self.layer.borderWidth = 2.0
         self.layer.borderColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.3).cgColor
         
@@ -36,6 +36,7 @@ class PhotoCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),

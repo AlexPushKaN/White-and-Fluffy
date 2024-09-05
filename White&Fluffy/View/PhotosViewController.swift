@@ -40,12 +40,6 @@ final class PhotosViewController: UIViewController {
         viewModel.loadPhotos()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-    }
-    
     private func setupCollectionView() {
         
         let layout = UICollectionViewFlowLayout()
@@ -97,7 +91,7 @@ final class PhotosViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    //MARK: - Binding
+    //MARK: - Binding with AppViewModel
     private func binding() {
         
         viewModel.onError = { [unowned self] error in

@@ -9,7 +9,6 @@ import UIKit
 
 class TabBarController: UITabBarController {
 
-    var networkingService: NetworkingProtocol!
     var appViewModel: AppViewModelProtocol!
 
     init(appViewModel: AppViewModelProtocol) {
@@ -32,14 +31,14 @@ class TabBarController: UITabBarController {
         
         tabBar.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         tabBar.barTintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-        tabBar.tintColor = #colorLiteral(red: 0.9956421256, green: 0.9758022428, blue: 0.9372857213, alpha: 1)
-        tabBar.unselectedItemTintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        tabBar.tintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        tabBar.unselectedItemTintColor = #colorLiteral(red: 0.9956421256, green: 0.9758022428, blue: 0.9372857213, alpha: 1)
         tabBar.isTranslucent = false
         
         let photosVC = PhotosViewController(viewModel: appViewModel)
         photosVC.tabBarItem = UITabBarItem(title: "Коллекция", image: UIImage(systemName: "photo"), tag: 0)
         
-        let favoritesVC = FavoritesViewController()
+        let favoritesVC = FavoritesViewController(viewModel: appViewModel)
         favoritesVC.tabBarItem = UITabBarItem(title: "Избранные", image: UIImage(systemName: "star"), tag: 1)
         
         viewControllers = [

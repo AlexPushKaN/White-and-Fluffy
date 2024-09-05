@@ -12,6 +12,7 @@ protocol AppViewModelProtocol {
     
     var photos: [UnsplashPhoto] { get set }
     var filteredPhotos: [UnsplashPhoto] { get set }
+    var favoritesPhotos: [UnsplashPhoto] { get }
     var onError: ((AFError) -> Void)? { get set }
     var onPhotosUpdated: (() -> Void)? { get set }
     func loadPhotos()
@@ -28,6 +29,9 @@ final class AppViewModel: AppViewModelProtocol {
         didSet {
             onPhotosUpdated?()
         }
+    }
+    var favoritesPhotos: [UnsplashPhoto] {
+        return photos.filter { $0.isFavorite }
     }
     
     private let networkingService: NetworkingProtocol

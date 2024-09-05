@@ -35,12 +35,13 @@ class PhotoDetailViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        setupViews()
-        configureData()
+        
+        setupSubviews()
         setupConstraints()
+        configureData()
     }
     
-    private func setupViews() {
+    private func setupSubviews() {
         
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -65,19 +66,8 @@ class PhotoDetailViewController: UIViewController {
          favoriteButton].forEach({ view.addSubview($0) })
     }
     
-    private func configureData() {
-        
-        if let url = URL(string: photo.urls.regular) {
-            imageView.kf.setImage(with: url)
-        }
-        authorLabel.text = "Автор: \(photo.user.name)"
-        dateLabel.text = "Дата: \(photo.createdAt?.components(separatedBy: "T").first ?? "Нет даты")"
-        locationLabel.text = "Локация: \(photo.location?.name ?? "Планета - Земля")"
-        downloadsLabel.text = "Количество загрузок: \(photo.downloads ?? 0)"
-        updateFavoriteButton()
-    }
-    
     private func setupConstraints() {
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         authorLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +76,7 @@ class PhotoDetailViewController: UIViewController {
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -113,6 +104,18 @@ class PhotoDetailViewController: UIViewController {
             favoriteButton.widthAnchor.constraint(equalToConstant: 40.0),
             favoriteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
+    }
+    
+    private func configureData() {
+        
+        if let url = URL(string: photo.urls.regular) {
+            imageView.kf.setImage(with: url)
+        }
+        authorLabel.text = "Автор: \(photo.user.name)"
+        dateLabel.text = "Дата: \(photo.createdAt?.components(separatedBy: "T").first ?? "Нет даты")"
+        locationLabel.text = "Локация: \(photo.location?.name ?? "Планета - Земля")"
+        downloadsLabel.text = "Количество загрузок: \(photo.downloads ?? 0)"
+        updateFavoriteButton()
     }
     
     private func updateFavoriteButton() {
