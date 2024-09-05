@@ -9,6 +9,8 @@ import Foundation
 
 struct UnsplashPhoto: Decodable {
     
+    var isFavorite: Bool = false
+    
     let id: String
     let createdAt: String?
     let width: Int
@@ -38,6 +40,7 @@ struct UnsplashPhoto: Decodable {
         let profileImage: ProfileImage?
 
         struct ProfileImage: Decodable {
+            
             let small: String
             let medium: String
             let large: String
@@ -47,5 +50,37 @@ struct UnsplashPhoto: Decodable {
     struct Location: Decodable {
         
         let name: String?
+    }
+
+    init(from decoder: Decoder) throws {
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        width = try container.decode(Int.self, forKey: .width)
+        height = try container.decode(Int.self, forKey: .height)
+        color = try container.decodeIfPresent(String.self, forKey: .color)
+        likes = try container.decode(Int.self, forKey: .likes)
+        downloads = try container.decodeIfPresent(Int.self, forKey: .downloads)
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        urls = try container.decode(URLS.self, forKey: .urls)
+        user = try container.decode(User.self, forKey: .user)
+        location = try container.decodeIfPresent(Location.self, forKey: .location)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        
+        case id
+        case createdAt = "created_at"
+        case width
+        case height
+        case color
+        case likes
+        case downloads
+        case description
+        case urls
+        case user
+        case location
     }
 }

@@ -37,10 +37,10 @@ class TabBarController: UITabBarController {
         tabBar.isTranslucent = false
         
         let photosVC = PhotosViewController(viewModel: appViewModel)
-        photosVC.tabBarItem = UITabBarItem(title: "Photos", image: UIImage(systemName: "photo"), tag: 0)
+        photosVC.tabBarItem = UITabBarItem(title: "Коллекция", image: UIImage(systemName: "photo"), tag: 0)
         
         let favoritesVC = FavoritesViewController()
-        favoritesVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "star"), tag: 1)
+        favoritesVC.tabBarItem = UITabBarItem(title: "Избранные", image: UIImage(systemName: "star"), tag: 1)
         
         viewControllers = [
             UINavigationController(rootViewController: photosVC),

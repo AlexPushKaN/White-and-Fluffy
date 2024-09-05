@@ -29,14 +29,21 @@ final class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Photos"
+        title = "Коллекция"
         view.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
         
         setupCollectionView()
         setupSearchBar()
         binding()
         
         viewModel.loadPhotos()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
     }
     
     private func setupCollectionView() {
@@ -54,18 +61,26 @@ final class PhotosViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
-    
     private func setupSearchBar() {
         
         searchBar.delegate = self
-        searchBar.placeholder = "Search Photos"
+        searchBar.placeholder = "Поиск"
+        searchBar.showsCancelButton = true
+        if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
+            cancelButton.setTitleColor(#colorLiteral(red: 0.8078431487,
+                                                     green: 0.02745098062,
+                                                     blue: 0.3333333433,
+                                                     alpha: 1), 
+                                       for: .normal)
+            cancelButton.setTitle("Отмена", for: .normal)
+        }
         searchBar.searchTextField.backgroundColor = #colorLiteral(red: 0.9956421256, green: 0.9758022428, blue: 0.9372857213, alpha: 1)
         searchBar.searchTextField.layer.borderColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         searchBar.searchTextField.layer.borderWidth = 2.0
@@ -81,7 +96,8 @@ final class PhotosViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-
+    
+    //MARK: - Binding
     private func binding() {
         
         viewModel.onError = { [unowned self] error in
@@ -110,14 +126,14 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - UICollectionViewDataSource
 extension PhotosViewController: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int { viewModel.photos.count }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.filteredPhotos.count
+    }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-        let photo = viewModel.photos[indexPath.item]
+        let photo = viewModel.filteredPhotos[indexPath.item]
         cell.configure(with: photo)
         return cell
     }
@@ -126,17 +142,39 @@ extension PhotosViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegate
 extension PhotosViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let photo = viewModel.photos[indexPath.item]
+        let photo = viewModel.filteredPhotos[indexPath.item]
         let detailVC = PhotoDetailViewController(photo: photo)
+        detailVC.updatePhoto = { [unowned self] favoritesPhoto in
+            if let index = viewModel.photos.firstIndex(where: { $0.id == favoritesPhoto.id }) {
+                viewModel.photos[index].isFavorite = favoritesPhoto.isFavorite
+            }
+        }
+
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
 //MARK: - UISearchBarDelegate
 extension PhotosViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty { 
+            viewModel.filteredPhotos = viewModel.photos
+        } else {
+            viewModel.filteredPhotos = viewModel.photos.filter { photo in
+                guard let description = photo.description else { return false }
+                return description.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
     
-    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        viewModel.filteredPhotos = viewModel.photos
+    }
 }

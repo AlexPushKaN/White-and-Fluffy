@@ -9,7 +9,9 @@ import Foundation
 import Alamofire
 
 protocol AppViewModelProtocol {
-    var photos: [UnsplashPhoto] { get }
+    
+    var photos: [UnsplashPhoto] { get set }
+    var filteredPhotos: [UnsplashPhoto] { get set }
     var onError: ((AFError) -> Void)? { get set }
     var onPhotosUpdated: (() -> Void)? { get set }
     func loadPhotos()
@@ -17,7 +19,17 @@ protocol AppViewModelProtocol {
 
 final class AppViewModel: AppViewModelProtocol {
     
-    private(set) var photos: [UnsplashPhoto] = []
+    var photos: [UnsplashPhoto] = [] {
+        didSet {
+            filteredPhotos = photos
+        }
+    }
+    var filteredPhotos: [UnsplashPhoto] = [] {
+        didSet {
+            onPhotosUpdated?()
+        }
+    }
+    
     private let networkingService: NetworkingProtocol
     
     var onError: ((AFError) -> Void)?
@@ -34,7 +46,6 @@ final class AppViewModel: AppViewModelProtocol {
             switch result {
             case .success(let photos):
                 self.photos = photos
-                self.onPhotosUpdated?()
             case .failure(let error):
                 self.onError?(error)
             }
